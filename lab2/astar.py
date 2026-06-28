@@ -46,32 +46,31 @@ def display(start):
     print()
 
 def aStar(start, heuristic):
-    pq=[]
-    heappush(pq, (heuristic(start), 0,start))
-    parent={start: None}
-    g_cost={start:None}
+    pq = []
+    heappush(pq, (heuristic(start), 0, start))
 
-    expanded=0
+    parent = {start: None}
+    g_cost = {start: 0}
 
+    expanded = 0
 
     while pq:
-        f,g, current=heappop(pq)
-        expanded+=1
+        f, g, current = heappop(pq)
+        expanded += 1
 
-        if current==goal:
-            return True, parent,expanded
+        if current == goal:
+            return True, parent, expanded
+
         for neighbour in get_neighbours(current):
-            new_g=g+1
-            if neighbour not in g_cost or new_g<g_cost[neighbour]:
-                g_cost[neighbour]=new_g
-                f_cost=new_g+ heuristic(neighbour)
-                heappush(
-                    pq, 
-                    (f_cost, new_g, neighbour)
+            new_g = g + 1
 
-                )
-                parent[neighbour]=current
-    return False,parent, expanded
+            if neighbour not in g_cost or new_g < g_cost[neighbour]:
+                g_cost[neighbour] = new_g
+                f_cost = new_g + heuristic(neighbour)
+                heappush(pq, (f_cost, new_g, neighbour))
+                parent[neighbour] = current
+
+    return False, parent, expanded
 
 def reconstruct(parent, current):
     path=[]
@@ -83,11 +82,11 @@ def reconstruct(parent, current):
 goalFound,parent,expanded =aStar(start, h1)
 
 if(goalFound):
-    print(f"Goal found after expanding {expanded} starts")
+    print(f"Goal found after expanding {expanded} states.")
     for state in reconstruct(parent, goal):
         display(state)
 
 else:
-    print(F"Goal start not found after expanding {expanded}")
+    print(F"Goal state not found after expanding {expanded} states.")
 
    
